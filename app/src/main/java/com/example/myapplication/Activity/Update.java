@@ -29,7 +29,7 @@ public class Update extends AppCompatActivity {
 
     TextInputEditText name2, Description2;
     Button sve2, cncl2;
-    FloatingActionButton pop2;
+    FloatingActionButton pop2,bck;
     private FirebaseAuth mAuth;
     DatabaseReference myref;
 
@@ -47,6 +47,7 @@ public class Update extends AppCompatActivity {
         sve2 = findViewById(R.id.sve2);
         cncl2 = findViewById(R.id.cncl2);
         pop2 = findViewById(R.id.pop2);
+        bck = findViewById(R.id.bck);
 
         String updatitle = getIntent().getStringExtra("Title");
         String updatedescrip = getIntent().getStringExtra("Description");
@@ -82,6 +83,14 @@ public class Update extends AppCompatActivity {
         });
 
         cncl2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Update.this, DataStore.class));
+                finishAffinity();
+            }
+        });
+
+        bck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Update.this, DataStore.class));

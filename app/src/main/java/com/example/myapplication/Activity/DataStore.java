@@ -64,7 +64,7 @@ public class DataStore extends AppCompatActivity {
                 Intent i = new Intent(DataStore.this, Addnew.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
-                finishAffinity();
+
             }
         });
 
