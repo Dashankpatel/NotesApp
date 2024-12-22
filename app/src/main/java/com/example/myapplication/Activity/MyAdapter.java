@@ -47,8 +47,8 @@ public class MyAdapter extends BaseAdapter {
 
         HashMap<Object, Object> data = datalist.get(position);
 
-        tit2.setText(data.get("Title").toString());
-        detai.setText(data.get("Description").toString());
+        tit2.setText(" "+data.get("Title").toString());
+        detai.setText("  "+data.get("Description").toString());
 
 
         tit2.setOnClickListener(new View.OnClickListener() {
