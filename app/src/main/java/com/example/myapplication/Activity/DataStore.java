@@ -163,7 +163,7 @@ public class DataStore extends AppCompatActivity {
                                     SplaceScreen.edit.apply();
                                     SplaceScreen.edit.putInt("uid", 0);
 
-                                    startActivity(new Intent(DataStore.this, MainActivity.class));
+                                    startActivity(new Intent(DataStore.this, Loginpage.class));
                                     finishAffinity();
                                 }
                             });

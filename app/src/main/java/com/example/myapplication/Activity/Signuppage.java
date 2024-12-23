@@ -18,22 +18,24 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Home_page extends AppCompatActivity {
+public class Signuppage extends AppCompatActivity {
 
     Button login2,signup2;
-    TextInputEditText name,crtpass;
+    TextInputEditText email,crtpass,name,cnfpass;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.signuppage);
         mAuth = FirebaseAuth.getInstance();
 
         login2 = findViewById(R.id.login2);
         signup2 = findViewById(R.id.signup2);
         name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
         crtpass = findViewById(R.id.crtpass);
+        cnfpass = findViewById(R.id.cnfpass);
 
 
 //        login page ma java
@@ -41,7 +43,7 @@ public class Home_page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(Home_page.this, MainActivity.class);
+                Intent i = new Intent(Signuppage.this, Loginpage.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
                 finishAffinity();
@@ -52,21 +54,48 @@ public class Home_page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                sign(name.getText().toString(),crtpass.getText().toString());
-
-                if (!name.getText().toString().isEmpty() && !crtpass.getText().toString().isEmpty())
+                if (!name.getText().toString().isEmpty() && !email.getText().toString().isEmpty() &&
+                        !crtpass.getText().toString().isEmpty() && !cnfpass.getText().toString().isEmpty())
                 {
-                    sign(name.getText().toString(),crtpass.getText().toString());
+                    String pass1 = crtpass.getText().toString();
+                    String pass2 = cnfpass.getText().toString();
 
-                    Intent i = new Intent(Home_page.this, MainActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
-                    finishAffinity();
+                    String emailid = email.getText().toString();
+                    if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailid).matches()) {
+                        email.setError("Please enter a valid email address");
+                        return;
+                    }
+
+                    if ( pass1.length()!= 6)
+                    {
+                        crtpass.setError("Password required");
+                        Toast.makeText(Signuppage.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else if ( pass2.length() != 6) {
+                        cnfpass.setError("Password required");
+                        Toast.makeText(Signuppage.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (pass1.equals(pass2)) {
+                        sign(emailid, crtpass.getText().toString());
+
+                        Intent i = new Intent(Signuppage.this, Loginpage.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        finishAffinity();
+                    }
+                    else
+                    {
+                        Toast.makeText(Signuppage.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
                 else
                 {
-                    Toast.makeText(Home_page.this, "please Enter Your Data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Signuppage.this, "please Enter Your Data", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -86,13 +115,13 @@ public class Home_page extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("--+-+--", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(Home_page.this, "Authentication Completed.",
+                            Toast.makeText(Signuppage.this, "Authentication Completed.",
                                     Toast.LENGTH_SHORT).show();
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d("--+-+--", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(Home_page.this, "Authentication failed.",
+                            Toast.makeText(Signuppage.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

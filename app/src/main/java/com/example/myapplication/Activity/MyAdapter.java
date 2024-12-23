@@ -1,8 +1,5 @@
 package com.example.myapplication.Activity;
 
-import static androidx.core.app.ActivityCompat.finishAffinity;
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -60,12 +57,11 @@ public class MyAdapter extends BaseAdapter {
         tit2.setText(data.get("Title").toString());
         detai.setText(data.get("Description").toString());
 
-
         tit2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                dataStore.startActivity(new Intent(dataStore, Update.class)
+                dataStore.startActivity(new Intent(dataStore, Edit.class)
                         .putExtra("key", data.get("key").toString())
                         .putExtra("Title", tit2.getText())
                         .putExtra("Description", detai.getText()));
@@ -106,24 +102,20 @@ public class MyAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
-
 //                        DatabaseReference myRef = database.getReference("user").child("key");
                         DatabaseReference myRef = FirebaseDatabase.getInstance()
                                 .getReference("user")
                                 .child(data.get("key").toString());
-//
-                        myRef.removeValue()
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        datalist.remove(position);
-                                        notifyDataSetChanged();
 
-                                        Toast.makeText(dataStore, "Item deleted successfully", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(dataStore, "Failed to delete item", Toast.LENGTH_SHORT).show();
-                                    }
-                                    dialog.dismiss();
-                                });
+                        myRef.removeValue();
+                        dialog.dismiss();
+
+                        dataStore.startActivity(new Intent(dataStore,DataStore.class)
+                                .putExtra("key", data.get("key").toString())
+                                .putExtra("Title", tit2.getText())
+                                .putExtra("Description", detai.getText()));
+                        dataStore.finishAffinity();
+
                     }
                 });
 

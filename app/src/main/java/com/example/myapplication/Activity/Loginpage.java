@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class Loginpage extends AppCompatActivity {
 
     Button sign_up, login, nnew;
     SignInButton google;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.loginpage);
         mAuth = FirebaseAuth.getInstance();
 
         sign_up = findViewById(R.id.sign_up);
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        googleSignInClient = GoogleSignIn.getClient(MainActivity.this, googleSignInOptions);
+        googleSignInClient = GoogleSignIn.getClient(Loginpage.this, googleSignInOptions);
 
 
         //        create account signup page ma java mate
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(MainActivity.this, Home_page.class));
+                startActivity(new Intent(Loginpage.this, Signuppage.class));
                 finishAffinity();
             }
         });
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     oldlogin(mail.getText().toString(), pass.getText().toString());
 
                 } else {
-                    Toast.makeText(MainActivity.this, "Please Enter Your Email-Id", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Loginpage.this, "Please Enter Your Email-Id", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                                     SplaceScreen.edit.putBoolean("status", true);
                                     SplaceScreen.edit.putInt("uid", 0);
                                     SplaceScreen.edit.apply();
-                                    Intent i = new Intent(MainActivity.this, DataStore.class);
+                                    Intent i = new Intent(Loginpage.this, DataStore.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(i);
                                     finishAffinity();
@@ -224,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //    old account login
-
     void oldlogin(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -233,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("-+-+-+-", "signInWithEmail:success");
-                            Toast.makeText(MainActivity.this, "Authentication success.",
+                            Toast.makeText(Loginpage.this, "Authentication success.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
 
@@ -241,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                             SplaceScreen.edit.putInt("uid", 0);
                             SplaceScreen.edit.apply();
 
-                            Intent i = new Intent(MainActivity.this, DataStore.class);
+                            Intent i = new Intent(Loginpage.this, DataStore.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                             finishAffinity();
@@ -252,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("-+-+-+-", "signInWithEmail:failure", task.getException());
 //                            Toast.makeText(MainActivity.this, "Authentication failed.",
 //                                    Toast.LENGTH_SHORT).show();
-                            Toast.makeText(MainActivity.this, "Please Enter Valid Email-Id",
+                            Toast.makeText(Loginpage.this, "Please Enter Valid Email-Id",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

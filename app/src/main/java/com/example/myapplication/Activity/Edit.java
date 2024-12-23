@@ -11,21 +11,16 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Update extends AppCompatActivity {
+public class Edit extends AppCompatActivity {
 
     TextInputEditText name2, Description2;
     Button sve2, cncl2;
@@ -37,7 +32,7 @@ public class Update extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_update);
+        setContentView(R.layout.edit);
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -70,13 +65,13 @@ public class Update extends AppCompatActivity {
                     myRef.child("Title").setValue(title);
                     myRef.child("Description").setValue(description);
 
-                    Intent i = new Intent(Update.this, DataStore.class);
+                    Intent i = new Intent(Edit.this, DataStore.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                     finishAffinity();
 
                 } else {
-                    Toast.makeText(Update.this, "Please Fill A Data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit.this, "Please Fill A Data", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -85,7 +80,7 @@ public class Update extends AppCompatActivity {
         cncl2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Update.this, DataStore.class));
+                startActivity(new Intent(Edit.this, DataStore.class));
                 finishAffinity();
             }
         });
@@ -93,7 +88,7 @@ public class Update extends AppCompatActivity {
         bck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Update.this, DataStore.class));
+                startActivity(new Intent(Edit.this, DataStore.class));
                 finishAffinity();
             }
         });
@@ -102,7 +97,7 @@ public class Update extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                PopupMenu pmenu2 = new PopupMenu(Update.this, pop2);
+                PopupMenu pmenu2 = new PopupMenu(Edit.this, pop2);
 
                 pmenu2.inflate(R.menu.mymenu2);
                 pmenu2.show();
@@ -113,18 +108,18 @@ public class Update extends AppCompatActivity {
 
                         if (item.getItemId() == R.id.shre)
                         {
-                            Toast.makeText(Update.this, "Share", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit.this, "Share", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(Intent.ACTION_SEND);
                             String shareBody = "Title :- "+name2.getText().toString()+"\n"+"Description :- "+Description2.getText().toString();
                             intent.setType("text/plain");
                             intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                            Update.this.startActivity(Intent.createChooser(intent, ""));
+                            Edit.this.startActivity(Intent.createChooser(intent, ""));
                         }
 
                         else if (item.getItemId() == R.id.delete)
                         {
-                            Dialog dialog = new Dialog(Update.this);
+                            Dialog dialog = new Dialog(Edit.this);
                             dialog.setContentView(R.layout.dialogview_delete);
                             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                             dialog.show();
@@ -142,7 +137,7 @@ public class Update extends AppCompatActivity {
                                     DatabaseReference myRef = database.getReference("user").child(key);
 //
                                     myRef.removeValue();
-                                    startActivity(new Intent(Update.this, DataStore.class));
+                                    startActivity(new Intent(Edit.this, DataStore.class));
                                     finishAffinity();
                                 }
                             });

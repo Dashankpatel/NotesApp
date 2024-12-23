@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAEBBE"
-    tools:context=".Activity.Home_page">
+    tools:context=".Activity.Signuppage">
 
     <TextView
         android:id="@+id/textView5"
@@ -57,15 +57,14 @@
 
     </LinearLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout3"
+        android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30sp"
         android:layout_marginTop="60sp"
         android:layout_marginRight="30sp"
-        android:hint="Please Enter Your Email Id"
+        android:hint="Enter Your Name"
         app:boxCornerRadiusBottomEnd="20sp"
         app:boxCornerRadiusBottomStart="20sp"
         app:boxCornerRadiusTopEnd="20sp"
@@ -83,7 +82,30 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
+        android:id="@+id/textInputLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        android:hint="Please Enter Your Email Id"
+        app:boxCornerRadiusBottomEnd="20sp"
+        app:boxCornerRadiusBottomStart="20sp"
+        app:boxCornerRadiusTopEnd="20sp"
+        app:boxCornerRadiusTopStart="20sp"
+        app:boxStrokeWidth="2sp"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30sp"
@@ -94,13 +116,41 @@
         app:boxCornerRadiusTopEnd="20sp"
         app:boxCornerRadiusTopStart="20sp"
         app:boxStrokeWidth="2sp"
-        app:counterEnabled="true"
-        app:endIconMode="password_toggle"
+        app:counterEnabled="false"
         app:counterMaxLength="6"
+        app:endIconMode="password_toggle"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/crtpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberPassword"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
+        android:hint="Confirm a password"
+        app:boxCornerRadiusBottomEnd="20sp"
+        app:boxCornerRadiusBottomStart="20sp"
+        app:boxCornerRadiusTopEnd="20sp"
+        app:boxCornerRadiusTopStart="20sp"
+        app:boxStrokeWidth="2sp"
+        app:counterEnabled="true"
+        app:endIconMode="password_toggle"
+        app:counterMaxLength="6"
+        app:errorEnabled="true"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cnfpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"

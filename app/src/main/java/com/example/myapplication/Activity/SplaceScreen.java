@@ -36,7 +36,7 @@ public class SplaceScreen extends AppCompatActivity {
                 }
                 else
                 {
-                    startActivity(new Intent(SplaceScreen.this, MainActivity.class));
+                    startActivity(new Intent(SplaceScreen.this, Loginpage.class));
                     finishAffinity();
                 }
 
