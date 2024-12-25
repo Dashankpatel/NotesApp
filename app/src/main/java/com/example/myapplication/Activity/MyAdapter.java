@@ -2,6 +2,8 @@ package com.example.myapplication.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +82,7 @@ public class MyAdapter extends BaseAdapter {
                 intent.setType("text/plain");
                 intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 dataStore.startActivity(Intent.createChooser(intent, ""));
+
             }
         });
 

@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 
@@ -64,7 +65,6 @@ public class DataStore extends AppCompatActivity {
                 Intent i = new Intent(DataStore.this, Addnew.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
-
             }
         });
 
@@ -87,6 +87,12 @@ public class DataStore extends AppCompatActivity {
 
                         datalist.add(userdata);
                     }
+                    datalist.sort(new Comparator<HashMap<Object, Object>>() {
+                        @Override
+                        public int compare(HashMap<Object, Object> o1, HashMap<Object, Object> o2) {
+                            return o1.get("Title").toString().compareTo(o2.get("Title").toString());
+                        }
+                    });
                     MyAdapter adapter = new MyAdapter(DataStore.this, datalist);
                     list.setAdapter(adapter);
                 } else {

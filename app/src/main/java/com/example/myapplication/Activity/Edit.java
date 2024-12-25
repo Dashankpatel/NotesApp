@@ -2,7 +2,9 @@ package com.example.myapplication.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.example.myapplication.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,13 +23,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
+
 public class Edit extends AppCompatActivity {
 
     TextInputEditText name2, Description2;
-    Button sve2, cncl2;
+    Button sve2, cncl2,whatsap,skype;
     FloatingActionButton pop2,bck;
     private FirebaseAuth mAuth;
-    DatabaseReference myref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public class Edit extends AppCompatActivity {
         cncl2 = findViewById(R.id.cncl2);
         pop2 = findViewById(R.id.pop2);
         bck = findViewById(R.id.bck);
+        whatsap = findViewById(R.id.whatsap);
+        skype = findViewById(R.id.skype);
 
         String updatitle = getIntent().getStringExtra("Title");
         String updatedescrip = getIntent().getStringExtra("Description");
@@ -90,6 +96,41 @@ public class Edit extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(Edit.this, DataStore.class));
                 finishAffinity();
+            }
+        });
+
+        whatsap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Whatsapp share
+                    Intent waIntent = new Intent(Intent.ACTION_SEND);
+                    waIntent.setType("text/plain");
+                    String shareBody = "Title :- " + name2.getText().toString()
+                            + "\n" +
+                            "Description :- " + Description2.getText().toString();
+                    waIntent.setPackage("com.whatsapp");
+
+                    waIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                    Edit.this.startActivity(waIntent);
+            }
+        });
+
+        skype.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                String shareBody2 = "Title :- " + name2.getText().toString()
+                        + "\n" +
+                        "Description :- " + Description2.getText().toString();
+                sendIntent.putExtra(Intent.EXTRA_TEXT, shareBody2);
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+
+
             }
         });
 

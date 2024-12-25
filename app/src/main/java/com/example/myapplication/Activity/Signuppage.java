@@ -20,8 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Signuppage extends AppCompatActivity {
 
-    Button login2,signup2;
-    TextInputEditText email,crtpass,name,cnfpass;
+    Button login2, signup2;
+    TextInputEditText email, crtpass, name, cnfpass;
     private FirebaseAuth mAuth;
 
     @Override
@@ -50,57 +50,47 @@ public class Signuppage extends AppCompatActivity {
             }
         });
 
+//        account crate karava mate
         signup2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (!name.getText().toString().isEmpty() && !email.getText().toString().isEmpty() &&
-                        !crtpass.getText().toString().isEmpty() && !cnfpass.getText().toString().isEmpty())
-                {
+                        !crtpass.getText().toString().isEmpty() && !cnfpass.getText().toString().isEmpty()) {
+
                     String pass1 = crtpass.getText().toString();
                     String pass2 = cnfpass.getText().toString();
-
                     String emailid = email.getText().toString();
+
+//                    Email check
                     if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailid).matches()) {
                         email.setError("Please enter a valid email address");
                         return;
                     }
 
-                    if ( pass1.length()!= 6)
-                    {
-                        crtpass.setError("Password required");
-                        Toast.makeText(Signuppage.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else if ( pass2.length() != 6) {
-                        cnfpass.setError("Password required");
-                        Toast.makeText(Signuppage.this, "Please Enter a Password", Toast.LENGTH_SHORT).show();
+//                    password in 6 character
+                    if (pass1.length() != 6 && pass2.length() != 6) {
+                        Toast.makeText(Signuppage.this, "Please Enter Valid Character", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
+//                    pass1 & pass2 are same
                     if (pass1.equals(pass2)) {
-                        sign(emailid, crtpass.getText().toString());
+                        sign(emailid, pass1);
 
                         Intent i = new Intent(Signuppage.this, Loginpage.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                         finishAffinity();
+                    } else {
+                        Toast.makeText(Signuppage.this, "Password do not match", Toast.LENGTH_SHORT).show();
                     }
-                    else
-                    {
-                        Toast.makeText(Signuppage.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                }
-                else
-                {
+                } else {
                     Toast.makeText(Signuppage.this, "please Enter Your Data", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
-
 
 
     }
