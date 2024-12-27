@@ -2,13 +2,16 @@ package com.example.myapplication.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +31,8 @@ import java.io.File;
 public class Edit extends AppCompatActivity {
 
     TextInputEditText name2, Description2;
-    Button sve2, cncl2,whatsap,skype;
+    Button sve2, cncl2;
+    ImageView whatsap,skype,message;
     FloatingActionButton pop2,bck;
     private FirebaseAuth mAuth;
 
@@ -49,6 +53,7 @@ public class Edit extends AppCompatActivity {
         bck = findViewById(R.id.bck);
         whatsap = findViewById(R.id.whatsap);
         skype = findViewById(R.id.skype);
+        message = findViewById(R.id.message);
 
         String updatitle = getIntent().getStringExtra("Title");
         String updatedescrip = getIntent().getStringExtra("Description");
@@ -107,7 +112,7 @@ public class Edit extends AppCompatActivity {
                     waIntent.setType("text/plain");
                     String shareBody = "Title :- " + name2.getText().toString()
                             + "\n" +
-                            "Description :- " + Description2.getText().toString();
+                             "Description :- " + Description2.getText().toString();
                     waIntent.setPackage("com.whatsapp");
 
                     waIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
@@ -118,17 +123,59 @@ public class Edit extends AppCompatActivity {
         skype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Check if Skype is installed
+                if ( isSkypeInstalled()) {
+                    try {
+                        // Construct the URI for sending a message
+                        String skypeUri = "skype:username?chat"; // Replace 'username' with the Skype ID
+                        Intent skypeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(skypeUri));
+                        skypeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(skypeIntent);
 
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                String shareBody2 = "Title :- " + name2.getText().toString()
+                        // Optionally attach a message
+                        String shareBody = "Title :- " + name2.getText().toString()
+                                + "\n" +
+                                "Description :- " + Description2.getText().toString();
+                        skypeIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                        startActivity(skypeIntent);
+
+                    } catch (Exception e) {
+                        Toast.makeText(Edit.this, "Unable to send data to Skype.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    // Redirect to Play Store to install Skype
+                    Uri marketUri = Uri.parse("market://details?id=com.skype.raider");
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                    myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(myIntent);
+                }
+            }
+        });
+
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent smsVIntent = new Intent(Intent.ACTION_VIEW);
+                // prompts only sms-mms clients
+                smsVIntent.setType("vnd.android-dir/mms-sms");
+
+//                // extra fields for number and message respectively
+//                smsVIntent.putExtra("Title :- ", name2.getText().toString());
+//                smsVIntent.putExtra("Description :- " , Description2.getText().toString());
+
+                String shareBody = "Title :- " + name2.getText().toString()
                         + "\n" +
                         "Description :- " + Description2.getText().toString();
-                sendIntent.putExtra(Intent.EXTRA_TEXT, shareBody2);
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
+                smsVIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                try{
+                    Edit.this.startActivity(smsVIntent);
+                } catch (Exception ex) {
+                    Toast.makeText(Edit.this, "Your sms has failed...",
+                            Toast.LENGTH_LONG).show();
+                    ex.printStackTrace();
+                }
 
 
             }
@@ -209,7 +256,15 @@ public class Edit extends AppCompatActivity {
 //                myRef.removeValue();
 //            }
 //        });
+    }
 
-
+    private boolean isSkypeInstalled() {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo("com.skype.raider", PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }
