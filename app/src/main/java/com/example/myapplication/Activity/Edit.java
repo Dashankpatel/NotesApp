@@ -1,5 +1,6 @@
 package com.example.myapplication.Activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.myapplication.R;
@@ -123,33 +126,11 @@ public class Edit extends AppCompatActivity {
         skype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check if Skype is installed
-                if ( isSkypeInstalled()) {
-                    try {
-                        // Construct the URI for sending a message
-                        String skypeUri = "skype:username?chat"; // Replace 'username' with the Skype ID
-                        Intent skypeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(skypeUri));
-                        skypeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(skypeIntent);
 
-                        // Optionally attach a message
-                        String shareBody = "Title :- " + name2.getText().toString()
-                                + "\n" +
-                                "Description :- " + Description2.getText().toString();
-                        skypeIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                        startActivity(skypeIntent);
+                String skypeuser = "7990867767";
 
-                    } catch (Exception e) {
-                        Toast.makeText(Edit.this, "Unable to send data to Skype.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else {
-                    // Redirect to Play Store to install Skype
-                    Uri marketUri = Uri.parse("market://details?id=com.skype.raider");
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                    myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(myIntent);
-                }
+                sendMessageToSkype(skypeuser , "hello");
+
             }
         });
 
@@ -157,25 +138,23 @@ public class Edit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent smsVIntent = new Intent(Intent.ACTION_VIEW);
-                // prompts only sms-mms clients
-                smsVIntent.setType("vnd.android-dir/mms-sms");
+                final int REQUEST_SMS_PERMISSION = 1;
 
-//                // extra fields for number and message respectively
-//                smsVIntent.putExtra("Title :- ", name2.getText().toString());
-//                smsVIntent.putExtra("Description :- " , Description2.getText().toString());
-
-                String shareBody = "Title :- " + name2.getText().toString()
-                        + "\n" +
-                        "Description :- " + Description2.getText().toString();
-                smsVIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                try{
-                    Edit.this.startActivity(smsVIntent);
-                } catch (Exception ex) {
-                    Toast.makeText(Edit.this, "Your sms has failed...",
-                            Toast.LENGTH_LONG).show();
-                    ex.printStackTrace();
+                if (ContextCompat.checkSelfPermission(Edit.this, Manifest.permission.SEND_SMS)
+                        != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(Edit.this,new String[]{Manifest.permission.SEND_SMS}
+                            ,REQUEST_SMS_PERMISSION);
                 }
+                else {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    String shareBody = "Title :- " + name2.getText().toString()
+                            + "\n" +
+                            "Description :- " + Description2.getText().toString();
+                    intent.putExtra("sms_body",shareBody);
+
+                    startActivity(intent);
+                }
+
 
 
             }
@@ -246,6 +225,7 @@ public class Edit extends AppCompatActivity {
             }
         });
 
+
 //        store data delete karava mate
 //        nnew.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -258,13 +238,15 @@ public class Edit extends AppCompatActivity {
 //        });
     }
 
-    private boolean isSkypeInstalled() {
-        PackageManager pm = getPackageManager();
-        try {
-            pm.getPackageInfo("com.skype.raider", PackageManager.GET_ACTIVITIES);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
+    private Void sendMessageToSkype(String skypeUsername , String message){
+
+        String skypeurl = "skype:" + skypeUsername + "?chatmessage="+Uri.encode(message);
+
+        Intent skypeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(skypeurl));
+        skypeIntent.setPackage("com.skype.raider");
+
+        startActivity(skypeIntent);
+        return null;
     }
+
 }
