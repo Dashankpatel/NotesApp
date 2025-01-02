@@ -140,13 +140,16 @@ public class Edit extends AppCompatActivity {
 
                 final int REQUEST_SMS_PERMISSION = 1;
 
-                if (ContextCompat.checkSelfPermission(Edit.this, Manifest.permission.SEND_SMS)
+                if (ContextCompat.checkSelfPermission(Edit.this, android.Manifest.permission.SEND_SMS)
                         != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(Edit.this,new String[]{Manifest.permission.SEND_SMS}
+                    ActivityCompat.requestPermissions(Edit.this,new String[]{android.Manifest.permission.SEND_SMS}
                             ,REQUEST_SMS_PERMISSION);
                 }
                 else {
-                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+
+                    Uri uri= Uri.parse("smsto:");
+
+                    Intent intent = new Intent(Intent.ACTION_SENDTO,uri);
                     String shareBody = "Title :- " + name2.getText().toString()
                             + "\n" +
                             "Description :- " + Description2.getText().toString();
@@ -154,8 +157,6 @@ public class Edit extends AppCompatActivity {
 
                     startActivity(intent);
                 }
-
-
 
             }
         });
