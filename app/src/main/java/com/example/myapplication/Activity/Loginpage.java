@@ -120,7 +120,7 @@ public class Loginpage extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(Loginpage.this, googleSignInOptions);
 
 
-        //        create account signup page ma java mate
+//         create account signup page ma java mate
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
